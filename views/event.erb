@@ -19,6 +19,7 @@
                         <%= @users_table.where(id: rsvp[:user_id]).to_a[0][:name] %>
 
                         <small>
+               
                             (<a href="/rsvps/<%= rsvp[:id] %>/edit">edit</a> | <a href="/rsvps/<%= rsvp[:id] %>/destroy">delete</a>)
                         </small>
                     </h5>

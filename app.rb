@@ -79,6 +79,14 @@ end
 post "/rsvps/:id/update" do
     puts "params: #{params}"
 
+    @rsvp = rsvps_table.where(id: params[:id]).to_a[0]
+    @event = events_table.where(id: @rsvp[:event_id]).to_a[0]
+
+    rsvps_table.where(id: params["id"]).update(
+        comments: params["comments"],
+        going: params["going"]
+    )
+
     view "update_rsvp"
 end
 
@@ -101,6 +109,9 @@ end
 # receive the submitted signup form (aka "create")
 post "/users/create" do
     puts "params: #{params}"
+
+# if there's already a user with this email, skip!
+    existing_user = users_table.where(email: params)
 
     users_table.insert(
         name: params["name"],
@@ -139,5 +150,5 @@ end
 get "/logout" do
     # remove encrypted cookie for logged out user
     session["user_id"] = nil
-    view "logout"
+    redirect "/logins/new"
 end
